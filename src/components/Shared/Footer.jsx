@@ -1,5 +1,7 @@
 
 const Footer = () => {
+    const d = new Date();
+    let year = d.getFullYear();
     return (
       <div>
         <footer className="flex flex-col md:flex-row justify-center text-center  text-neutral-content">
@@ -54,9 +56,7 @@ const Footer = () => {
         </footer>
         <footer className="footer footer-center p-4 bg-[#151515] text-white">
           <aside>
-            <p>
-              Copyright © CulinaryCloud. All rights reserved.
-            </p>
+            <p>Copyright © {year} CulinaryCloud. All rights reserved.</p>
           </aside>
         </footer>
       </div>
