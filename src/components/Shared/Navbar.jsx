@@ -4,16 +4,26 @@ import { Link, NavLink } from "react-router-dom";
 const Navbar = () => {
     const navlinks = (
       <>
-        <li>
+        <li className="text-xl">
           <NavLink
-            className={({ isActive }) => (isActive ? "bg-none text-yellow-300" : "")}
+            className={({ isActive }) =>
+              isActive ? "bg-none text-yellow-300 " : ""
+            }
             to={"/"}
           >
             Home
           </NavLink>
         </li>
-        <li>
-          <a>Item 3</a>
+
+        <li className="text-xl">
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "bg-none text-yellow-300 " : ""
+            }
+            to={"/menu"}
+          >
+            Menu
+          </NavLink>
         </li>
       </>
     );
