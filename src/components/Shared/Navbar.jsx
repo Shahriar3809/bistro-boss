@@ -25,6 +25,16 @@ const Navbar = () => {
             Menu
           </NavLink>
         </li>
+        <li className="text-xl">
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "bg-none text-yellow-300 " : ""
+            }
+            to={"/order/salad"}
+          >
+            Order Food
+          </NavLink>
+        </li>
       </>
     );
     return (
