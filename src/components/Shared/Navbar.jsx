@@ -1,7 +1,12 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProviders";
 
 
 const Navbar = () => {
+
+  const { user, logOut } = useContext(AuthContext);
+  // console.log(user)
     const navlinks = (
       <>
         <li className="text-xl">
@@ -35,8 +40,33 @@ const Navbar = () => {
             Order Food
           </NavLink>
         </li>
+        {user && (
+          <li className="text-xl">
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "bg-none text-yellow-300 " : ""
+              }
+              to={"/my-cart"}
+            >
+              My Cart
+            </NavLink>
+          </li>
+        )}
       </>
     );
+
+
+const handleLogOut = () => {
+  logOut()
+  .then(res=> {
+    console.log(res)
+  })
+  .catch(err=> {
+    console.log(err)
+  })
+}
+
+
     return (
       <div>
         <div className="navbar max-w-screen-xl fixed z-30 text-white bg-opacity-60 bg-[#151515]">
@@ -69,15 +99,37 @@ const Navbar = () => {
                 {navlinks}
               </ul>
             </div>
-            <Link to={`/`} className="cursor-pointer font-bold text-left text-xl">BISTRO BOSS <br />RETAURANT</Link>
+            <Link
+              to={`/`}
+              className="cursor-pointer font-bold text-left text-xl"
+            >
+              BISTRO BOSS <br />
+              RETAURANT
+            </Link>
           </div>
           <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
-              {navlinks}
-            </ul>
+            <ul className="menu menu-horizontal px-1">{navlinks}</ul>
           </div>
           <div className="navbar-end">
-            <a className="btn">Button</a>
+            {user ? (
+              <>
+              <p>{user?.displayName}</p>
+                <button
+                  onClick={handleLogOut}
+                  className="btn ml-2 bg-yellow-500 font-bold border-0 px-6 rounded-sm"
+                >
+                  {" "}
+                  Sign Out{" "}
+                </button>
+              </>
+            ) : (
+              <Link
+                to={"/login"}
+                className="btn bg-yellow-500 font-bold border-0 px-6 rounded-sm"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
