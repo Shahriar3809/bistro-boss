@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 
 const Register = () => {
-  const { createUser, logOut } = useContext(AuthContext);
+  const { createUser, logOut, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -58,12 +58,25 @@ const Register = () => {
   };
 
 
+    const handleGoogleLogin = () => {
+      googleLogin()
+        .then((result) => {
+          console.log(result);
+          navigate(location?.state ? location.state : "/");
+          toast.success("Successfully Sign In");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+
 
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>Bistro Boss | Register</title>
-    </Helmet>
+      </Helmet>
       <div className="bg-gray-100">
         <h1 className="text-5xl text-center pt-10 text-black font-bold">
           Register now!
@@ -174,7 +187,7 @@ const Register = () => {
 
               <div className=" w-full md:mx-0 text-black mt-10 md:gap-0 justify-around mb-5">
                 <button
-                  // onClick={handleGoogleLogin}
+                  onClick={handleGoogleLogin}
                   className="font-bold flex justify-center w-full gap-3 items-center border px-12 py-3 hover:bg-violet-600 hover:text-white rounded-md"
                 >
                   <FaGoogle className="text-xl" />

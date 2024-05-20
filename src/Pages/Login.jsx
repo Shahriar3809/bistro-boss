@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 const Login = () => {
     const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
-    const { logIn } = useContext(AuthContext);
+    const { logIn, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -49,6 +49,19 @@ const Login = () => {
         setDisabled(true)
     }
   }
+
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        console.log(result)
+        navigate(location?.state ? location.state : "/");
+        toast.success("Successfully Sign In");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -134,7 +147,10 @@ const Login = () => {
               </form>
 
               <div className="w-full gap-3 md:mx-0 text-black mt-10 md:gap-0 justify-around mb-5">
-                <button className="font-bold flex w-full justify-center gap-3 items-center border px-12 py-3 hover:bg-violet-600 hover:text-white rounded-md">
+                <button
+                  onClick={handleGoogleLogin}
+                  className="font-bold flex w-full justify-center gap-3 items-center border px-12 py-3 hover:bg-violet-600 hover:text-white rounded-md"
+                >
                   Google Login
                 </button>
               </div>
