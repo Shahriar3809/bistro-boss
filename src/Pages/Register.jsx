@@ -7,12 +7,16 @@ import { updateProfile } from "firebase/auth";
 import { AuthContext } from "../Providers/AuthProviders";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 
 
 const Register = () => {
-  const { createUser, logOut, googleLogin } = useContext(AuthContext);
+  const { createUser, 
+    logOut,
+     googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic()
 
 
   const {
@@ -27,7 +31,7 @@ const Register = () => {
     createUser(email, password)
       .then((result) => {
         
-        toast.success('Sign Up Successful')
+        // toast.success('Sign Up Successful')
         
         // Update Profile while registration
         const updatedUser = result.user;
@@ -36,14 +40,22 @@ const Register = () => {
           photoURL: photo,
         })
           .then((res) => {
-            logOut()
-            .then(resp=> {
-                console.log(resp)
-                navigate("/login");
+            const userInfo = {name: data.name, email: data.email}
+            axiosPublic.post('/users', userInfo)
+            .then(response=> {
+              if(response.data.insertedId) {
+                toast.success("Successfully Created User. Please Login")
+                logOut()
+                  .then((resp) => {
+                    console.log(resp);
+                    navigate("/login");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
             })
-            .catch(err=> {
-                console.log(err)
-            })
+            
             console.log(res, "Successfully Update");
           })
           .catch((err) => {
@@ -62,6 +74,13 @@ const Register = () => {
       googleLogin()
         .then((result) => {
           console.log(result);
+          const userInfo = {name: result.user.displayName, email: result.user.email}
+          axiosPublic.post('/users', userInfo)
+            .then(response=> {
+              if(response.data.insertedId) {
+                toast.success('Successfully Sign Up')
+              }
+            })
           navigate(location?.state ? location.state : "/");
           toast.success("Successfully Sign In");
         })

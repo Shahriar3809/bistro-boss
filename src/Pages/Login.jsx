@@ -9,6 +9,7 @@ import {
 import { AuthContext } from "../Providers/AuthProviders";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const Login = () => {
     const captchaRef = useRef(null);
@@ -16,6 +17,7 @@ const Login = () => {
     const { logIn, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+        const axiosPublic = useAxiosPublic();
 
 
   const handleLogin = (event) => {
@@ -54,9 +56,20 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleLogin()
       .then((result) => {
-        console.log(result)
+        console.log(result);
+        const userInfo = {
+          name: result.user.displayName,
+          email: result.user.email,
+        };
+        axiosPublic.post("/users", userInfo)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data.insertedId) {
+            toast.success("Successfully Sign Up");
+          }
+        })
         navigate(location?.state ? location.state : "/");
-        toast.success("Successfully Sign In");
+        
       })
       .catch((error) => {
         console.log(error);

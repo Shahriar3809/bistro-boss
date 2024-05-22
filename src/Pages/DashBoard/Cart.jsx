@@ -55,8 +55,8 @@ const Cart = () => {
             <tbody>
               {/* row 1 */}
               {cart.map((item, index) => (
-                <>
-                  <tr>
+                
+                  <tr key={index}>
                     <th className="text-center">
                       <p>{index + 1}</p>
                     </th>
@@ -81,7 +81,7 @@ const Cart = () => {
                       />
                     </th>
                   </tr>
-                </>
+                
               ))}
             </tbody>
           </table>
